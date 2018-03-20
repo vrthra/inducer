@@ -1,4 +1,4 @@
-python3=PYTHONPATH=. python3
+python3=PYTHONPATH=. python3.6
 required_dirs=.pickled
 mytargets=hello whilescope microjson array url
 

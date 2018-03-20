@@ -25,7 +25,7 @@ def decorate(stem: str, key: str, sep: str = '.') -> str:
     return '%s%s%s' % (stem, sep, key)
 
 class Tracer(bdb.Bdb):
-    
+
     class_cache: Dict[Any, str] = {}
 
     """
@@ -193,6 +193,7 @@ class Tracer(bdb.Bdb):
         """
         return Tracer.get_qualified_name(frame)
 
+    # run vaiable to check whether its arrived at a breakpoint or not
     run = 0
 
     @classmethod

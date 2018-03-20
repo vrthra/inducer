@@ -10,6 +10,7 @@ import os
 import re
 import fnmatch
 from . import tstr
+import bdb
 
 # pylint: disable=multiple-statements,fixme, unidiomatic-typecheck
 # pylint: line-too-long
@@ -23,8 +24,8 @@ def decorate(stem: str, key: str, sep: str = '.') -> str:
     """Prepend a prefix to key"""
     return '%s%s%s' % (stem, sep, key)
 
-class Tracer:
-
+class Tracer(bdb.Bdb):
+    
     class_cache: Dict[Any, str] = {}
 
     """

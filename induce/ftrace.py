@@ -10,6 +10,7 @@ import os
 import re
 import fnmatch
 from . import tstr
+import bdb
 
 # pylint: disable=multiple-statements,fixme, unidiomatic-typecheck
 # pylint: line-too-long
@@ -23,7 +24,7 @@ def decorate(stem: str, key: str, sep: str = '.') -> str:
     """Prepend a prefix to key"""
     return '%s%s%s' % (stem, sep, key)
 
-class Tracer:
+class Tracer(bdb.Bdb):
 
     class_cache: Dict[Any, str] = {}
 
@@ -191,3 +192,39 @@ class Tracer:
         inspect.getouterframes(frame) if stack is needed
         """
         return Tracer.get_qualified_name(frame)
+
+    # run vaiable to check whether its arrived at a breakpoint or not
+    run = 0
+
+    @classmethod
+    def user_call(self, frame, args):
+        name = frame.f_code.co_name or "<unknown>"
+        print("call", name, args)
+        self.set_continue() # continue
+
+    @classmethod
+    def user_line(self, frame):
+        if self.run:
+            self.run = 0
+            self.set_trace() # start tracing
+        else:
+            # arrived at breakpoint
+            name = frame.f_code.co_name or "<unknown>"
+            filename = self.canonic(frame.f_code.co_filename)
+            print("break at", filename, frame.f_lineno, "in", name)
+        print("continue...")
+        self.set_continue() # continue to next breakpoint
+
+    @classmethod
+    def user_return(self, frame, value):
+        name = frame.f_code.co_name or "<unknown>"
+        print("return from", name, value)
+        print("continue...")
+        self.set_continue() # continue
+
+    @classmethod
+    def user_exception(self, frame, exception):
+        name = frame.f_code.co_name or "<unknown>"
+        print("exception in", name, exception)
+        print("continue...")
+        self.set_continue() # continue

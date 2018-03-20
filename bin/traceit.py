@@ -26,6 +26,15 @@ if __name__ == "__main__":
     else:
         fn = ".pickled/%s.tmp" % os.path.basename(m_file)
     with opened_file(fn) as trace_file:
+
+        # Putting breakpoint into the ftrace.py file 
+        #
+        #tcr = tracer.Tracer(mod_obj.inputs()[0], trace_file)
+        #tcr.run = 1
+        #tcr.set_break(os.path.realpath("../induce/traceit.py"), 11)
+        #tcr.runcall(decorate, 1)
+
+        
         # Infer grammar
         for x,_i in enumerate(mod_obj.inputs()):
             i = tstr.tstr(_i)

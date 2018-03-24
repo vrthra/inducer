@@ -23,8 +23,6 @@ ifeq ($(debug),trace)
 else
 	@$(python3) ./bin/traceit.py $<
 endif
-	@$(python3) ./bin/input.py $<
-	@mv .pickled/$*.py.i.tmp $@.input
 	@mv .pickled/$*.py.tmp $@
 
 .pickled/%.py.track: .pickled/%.py.trace

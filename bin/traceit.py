@@ -29,8 +29,7 @@ if __name__ == "__main__":
         # Infer grammar
         for x,_i in enumerate(mod_obj.inputs()):
             i = tstr.tstr(_i)
-            c = mod_obj.comparisons()[x]
-            with tracer.Tracer((i, c), trace_file) as t:
+            with tracer.Tracer(i, trace_file) as t:
                 t._my_files = ['%s' % os.path.basename(m_file)]
                 t._skip_classes = mod_obj.skip_classes() if hasattr(mod_obj, 'skip_classes') else []
                 o = mod_obj.main(i)
